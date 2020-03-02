@@ -144,6 +144,19 @@ nginx负载均衡策略：
 
 ### haproxy
 ### tomcat
+
+Tomcat工作模式:
+
+```
+Tomcat是一个JSP/Servlet容器。其作为Servlet容器，有三种工作模式：独立的Servlet容器、进程内的Servlet容器和进程外的Servlet容器。
+
+进入Tomcat的请求可以根据Tomcat的工作模式分为如下两类：
+Tomcat作为应用程序服务器：请求来自于前端的web服务器，这可能是Apache, IIS, Nginx等；
+Tomcat作为独立服务器：请求来自于web浏览器；
+```
+
+
+
 ### apache
 ## 关系型数据库
 ### mysql
