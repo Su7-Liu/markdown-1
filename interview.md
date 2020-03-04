@@ -1,16 +1,16 @@
 # 面试相关
 ## 计算机网络
 
-TCP/IP
+### TCP/IP
 
- 简述TCP三次握手的过程？
+ #### 简述TCP三次握手的过程？
 
 ```
 在TCP/IP协议中，TCP协议提供可靠的连接服务，采用三次握手建立一个连接。第一次握手：建立连接时，客户端发送syn包(syn=j)到服务器，并进入SYN_SEND状态，等待服务器确认。第二次握手：服务器收到syn包，必须确认客户的SYN（ack=j+1），同时自己也发送一个SYN包（syn=k），即SYN+ACK包，此时服务器进入SYN_RECV状态。第三次握手：客户端收到服务器的SYN＋ACK包，向服务器发送确认包ACK(ack=k+1)，此包发送完毕，客户端和服务器进入ESTABLISHED状态，完成三次握手。完成三次握手，客户端与服务器开始传送数据
 简版：首先A向B发SYN（同步请求），然后B回复SYN+ACK（同步请求应答），最后A回复ACK确认，这样TCP的一次连接（三次握手）的过程就建立了。
 ```
 
- 简述四次挥手的过程？
+####  简述四次挥手的过程？
 
 ```
    由于TCP连接是全双工的，因此，每个方向都必须要单独进行关闭，这一原则是当一方完成数据发送任务后，发送一个FIN来终止这一方向的连接，收到一个FIN只是意味着这一方向上没有数据流动了，即不会再收到数据了，但是在这个TCP连接上仍然能够发送数据，直到这一方向也发送了FIN。首先进行关闭的一方将执行主动关闭，而另一方则执行被动关闭，上图描述的即是如此。
@@ -20,7 +20,7 @@ TCP/IP
 （4）第四次挥手：Client收到FIN后，Client进入TIME_WAIT状态，接着发送一个ACK给Server，确认序号为收到序号+1，Server进入CLOSED状态，完成四次挥手。
 ```
 
-OSI七层和TCP/IP四层
+#### OSI七层和TCP/IP四层
 
 | OSI七层网络模型 |    TCP/IP四层概念模型    |  对应网络协议    |
 | --------------- | ---- | ---- |
@@ -32,7 +32,7 @@ OSI七层和TCP/IP四层
 |数据链路层（Data Link）                 | 数据链路层 | FDDI, Ethernet, Arpanet, PDN, SLIP, PPP |
 |物理层（Physical）                | 数据链路层 | IEEE 802.1A, IEEE 802.2到IEEE 802.11 |
 
-OSI七层功能：
+#### OSI七层功能：
 
 ```
 应用层（Application）:直接向用户提供服务，文件传输、电子邮件、文件服务、虚拟终端
@@ -49,7 +49,8 @@ OSI七层功能：
 
 ## 操作系统
 ### linux基础
-1、**linux的启动过程**
+
+#### 1、linux的启动过程
 
 ```
 1、内核引导。当计算机打开电源后，首先是BIOS开机自检，按照BIOS中设置的启动设备（通常是硬盘）来启动。操作系统接管硬件以后，首先读入 /boot 目录下的内核文件。
@@ -57,7 +58,7 @@ OSI七层功能：
 3、建立终端
 4、用户登录系统
 ```
-**2、介绍下cdn的作用**
+#### 2、介绍下cdn的作用
 
 ```
 全称Content Delivery Network即内容分发网络。
@@ -66,10 +67,84 @@ CDN是一组分布在多个不同的地理位置的WEB服务器，用于更加�
 CDN系统能实时的根据网络流量和各节点的连接，负载状况及用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上，其目的是使用户能就近的获取请求数据，解决网络拥堵，提高访问速度，解决由于网络带宽小，用户访问量大，网点分布不均等原因导致的访问速度慢的问题。
 
 ```
+#### 3、linux内核优化
+
+```bash
+关于内核参数的优化(/etc/sysctl.conf)：
+
+net.ipv4.tcp_max_tw_buckets = 6000
+timewait的数量，默认是180000。
+
+#net.ipv4.ip_local_port_range = 1024    65000
+允许系统打开的端口范围。
+
+net.ipv4.tcp_tw_recycle = 1
+启用timewait快速回收。
+
+net.ipv4.tcp_tw_reuse = 1
+开启重用。允许将TIME-WAIT sockets重新用于新的TCP连接。
+
+net.ipv4.tcp_syncookies = 1
+开启SYN Cookies，当出现SYN等待队列溢出时，启用cookies来处理。
+
+net.core.somaxconn = 262144
+web应用中listen函数的backlog默认会给我们内核参数的net.core.somaxconn限制到128，而nginx定义的NGX_LISTEN_BACKLOG默认为511，所以有必要调整这个值。
+
+net.core.netdev_max_backlog = 262144
+每个网络接口接收数据包的速率比内核处理这些包的速率快时，允许送到队列的数据包的最大数目。
+
+net.ipv4.tcp_max_orphans = 262144
+系统中最多有多少个TCP套接字不被关联到任何一个用户文件句柄上。如果超过这个数字，孤儿连接将即刻被复位并打印出警告信息。这个限制仅仅是为了防止简单的DoS攻击，不能过分依靠它或者人为地减小这个值，更应该增加这个值(如果增加了内存之后)。
+
+net.ipv4.tcp_max_syn_backlog = 262144
+记录的那些尚未收到客户端确认信息的连接请求的最大值。对于有128M内存的系统而言，缺省值是1024，小内存的系统则是128。
+
+net.ipv4.tcp_timestamps = 0
+时间戳可以避免序列号的卷绕。一个1Gbps的链路肯定会遇到以前用过的序列号。时间戳能够让内核接受这种“异常”的数据包。这里需要将其关掉。
+
+net.ipv4.tcp_synack_retries = 1
+为了打开对端的连接，内核需要发送一个SYN并附带一个回应前面一个SYN的ACK。也就是所谓三次握手中的第二次握手。这个设置决定了内核放弃连接之前发送SYN+ACK包的数量。
+
+net.ipv4.tcp_syn_retries = 1
+在内核放弃建立连接之前发送SYN包的数量。
+
+net.ipv4.tcp_fin_timeout = 1
+如果套接字由本端要求关闭，这个参数决定了它保持在FIN-WAIT-2状态的时间。对端可以出错并永远不关闭连接，甚至意外当机。缺省值是60 秒。2.2 内核的通常值是180秒，你可以按这个设置，但要记住的是，即使你的机器是一个轻载的WEB服务器，也有因为大量的死套接字而内存溢出的风险，FIN- WAIT-2的危险性比FIN-WAIT-1要小，因为它最多只能吃掉1.5K内存，但是它们的生存期长些。
+
+net.ipv4.tcp_keepalive_time = 30
+当keepalive起用的时候，TCP发送keepalive消息的频度。缺省是2小时。
+```
+
+
+
+#### 4、linux系统初始化优化
+
+```
+1、yum源
+2、关闭selinux
+3、禁用root远程登录，ssh端口，普通用户sudo
+4、时间同步
+5、设置文件打开数
+6、内核参数调优
+7、升级内核设置BBR
+8、锁定关键文件（chattr +i /etc/passwd）
+9、去除系统登录屏幕提示（/etc/issue、/etc/issue.net）
+10、关闭非必要服务
+11、关闭Ctrl+Alt+Del来重启系统
+12、设置rm -rf
+13、精简开机系统启动
+14、优化TCP
+15、选择正确的文件系统
+16、无操作自动登出
+```
+
+
+
 ### windows
+
 ## 中间件
 
-1、lvs、nginx、haproxy优缺点:
+#### 1、lvs、nginx、haproxy优缺点
 
 ```shell
 Nginx优点：
@@ -114,7 +189,8 @@ HAPorxy缺点：
 
 
 ### nginx
-nginx负载均衡策略：
+#### nginx负载均衡策略
+
 ```
 1、轮询（默认）
 每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。
@@ -130,7 +206,7 @@ nginx负载均衡策略：
 
 ### lvs
 
-三种工作模式
+#### 三种工作模式
 
 ```
 1、基于NAT的LVS模式负载均衡
@@ -145,10 +221,13 @@ nginx负载均衡策略：
 ### haproxy
 ### tomcat
 
-Tomcat工作模式:
+#### Tomcat工作模式:
 
 ```
-Tomcat是一个JSP/Servlet容器。其作为Servlet容器，有三种工作模式：独立的Servlet容器、进程内的Servlet容器和进程外的Servlet容器。
+Tomcat是一个JSP/Servlet容器。其作为Servlet容器，有三种工作模式：
+独立的Servlet容器、
+进程内的Servlet容器、
+进程外的Servlet容器。
 
 进入Tomcat的请求可以根据Tomcat的工作模式分为如下两类：
 Tomcat作为应用程序服务器：请求来自于前端的web服务器，这可能是Apache, IIS, Nginx等；
@@ -160,7 +239,8 @@ Tomcat作为独立服务器：请求来自于web浏览器；
 ### apache
 ## 关系型数据库
 ### mysql
-1、mysql常用备份工具
+#### 1、mysql常用备份工具
+
 ```shell
 1、备份类型：
 按照备份的数据集的范围分为：完全备份和部分备份
@@ -180,6 +260,38 @@ select语句备份，只能备份部分
 ### sqlserver
 ## 非关系型数据库
 ### redis
+
+#### 1、什么是Redis？简述它的优缺点？
+
+```
+Redis 是完全开源免费的，遵守BSD协议，是一个高性能的key-value数据库。
+
+Redis 与其他 key - value 缓存产品有以下三个特点：
+1、Redis支持数据的持久化， RDB和AOF持久化存储方案，解决内存数据库最担心的万一 Redis 挂掉，数据会消失掉。
+2、Redis支持丰富数据类型: String ，List，Set，Sorted Set，Hash 。
+3、Redis丰富的特性，订阅发布 Pub / Sub 功能，Key 过期策略，事务，支持多个 DB，计数
+4、Redis的速度快
+
+redis的缺点
+1、由于 Redis 是内存数据库，所以，单台机器，存储的数据量，跟机器本身的内存大小。虽然 Redis 本身有 Key 过期策略，但是还是需要提前预估和节约内存。如果内存增长过快，需要定期删除数据。
+2、redis是单线程的，单台服务器无法充分利用多核服务器的CPU
+```
+
+#### 2、Redis有哪些适合的场景
+
+```
+（1）会话缓存（Session Cache）
+（2）全页缓存（FPC）
+（3）队列
+（4）排行榜/计数器
+（5）发布/订阅
+
+```
+
+
+
+#### 3、redis支持的数据类型
+
 ```
 redis是key-value的数据
 键的类型是字符串
@@ -190,7 +302,16 @@ redis是key-value的数据
 - 集合set
 - 有序集合zset
 ```
+#### 4、Redis相比memcached有哪些优势？
+
+```
+(1) memcached所有的值均是简单的字符串，redis作为其替代者，支持更为丰富的数据类型
+(2) redis的速度比memcached快很多
+(3) redis可以持久化其数据
+```
+
 ### elasticsearch
+
 ### rabbitmq/rocketmq
 ### memcache
 ### mogondb
