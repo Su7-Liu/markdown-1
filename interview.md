@@ -143,9 +143,46 @@ net.ipv4.tcp_keepalive_time = 30
 16、无操作自动登出
 ```
 
+####  5、用tcpdump嗅探80端口的访问看看谁最高
+
+```bash
+tcpdump -i eth0 -tnn dst port 80 -c 1000 | awk -F"." '{print $1"."$2"."$3"."$4}' | sort | uniq -c | sort -nr |head -5&nbsp;
+```
+
+#### 6、查出那个IP连接最多
+
+```bash
+netstat -na | grep ESTABLISH | awk '{print $5}' | awk -F: '{print $1}'| sort | uniq -c | sort -r
+```
+
+#### 7、查看Web服务器8082端口进程连接数
+
+```bash
+netstat -antp |grep 8082|grep ESTABLISHED -c
+```
+
+
+
+#### 8、tar排除多个目录压缩
+
+```bash
+tar -zcvf tomcat.tar.gz --exclude=tomcat/logs --exclude=tomcat/libs --exclude=tomcat/xiaoshan.txt tomcat
+```
+
 
 
 ### windows
+
+####  1、windows查看连接数
+
+```basic
+当前tcp链接数总量：
+netstat -ant|find /C /I "TCP"
+10.10.0.1的网络链接数：
+netstat -ant|find /C /I "10.10.0.1"
+```
+
+
 
 ## 中间件
 
@@ -316,6 +353,75 @@ redis是key-value的数据
 ```
 
 ### elasticsearch
+
+#### 1、什么是Elasticsearch?
+
+```
+Elasticsearch简称ES，是一个基于Lucene的实时分布式的搜索与分析引擎，是遵从Apache开源条款的一款开源产品，是当前主流的企业级搜索引擎。它提供了一个分布式服务，可以使您快速的近乎于准实时的存储、查询和分析超大数据集，通常被用来当做构建复杂查询特性和需求强大应用的基础引擎或技术。
+
+```
+
+#### 2、elasticsearch的适用场景
+
+```
+（1）维基百科，类似百度百科，全文检索，高亮，搜索推荐
+（2）The Guardian（国外新闻网站），用户行为日志（点击，浏览，收藏，评论）+社交网络数据，数据分析
+（3）Stack Overflow（国外的程序异常讨论论坛）
+（4）GitHub（开源代码管理）
+（5）电商网站，检索商品
+（6）日志数据分析，logstash采集日志，ES进行复杂的数据分析（ELK技术，elasticsearch+logstash+kibana）
+（7）商品价格监控网站
+（8）BI系统，商业智能，Business Intelligence。
+（9）国内：站内搜索（电商，招聘，门户，等等），IT系统搜索（OA，CRM，ERP，等等），数据分析（ES热门的一个使用场景）
+```
+
+
+
+#### 3、elasticsearch的特点以及优势
+
+```
+横向可扩展性: 作为大型分布式集群，很容易就能扩展新的服务器到ES集群中；也可运行在单机上作为轻量级搜索引擎使用。
+更丰富的功能: 与传统关系型数据库相比，ES提供了全文检索、同义词处理、相关度排名、复杂数据分析、海量数据的近实时处理等功能。
+分片机制提供更好地分布性: 同一个索引被分为多个分片(Shard)，利用分而治之的思想提升处理效率。
+高可用: 提供副本(Replica)机制，一个分片可以设置多个副本，即使在某些服务器宕机后，集群仍能正常工作。
+开箱即用: 提供简单易用的 API，服务的搭建、部署和使用都很容易操作。
+
+```
+
+#### 4、Elasticsearch 是如何实现 Master 选举的？
+
+```
+前置前提：
+（1）只有候选主节点（master：true）的节点才能成为主节点。
+（2）最小主节点数（min_master_nodes）的目的是防止脑裂。
+
+选举流程大致描述如下：
+第一步：确认候选主节点数达标，elasticsearch.yml 设置的值
+discovery.zen.minimum_master_nodes；
+第二步：比较：先判定是否具备 master 资格，具备候选主节点资格的优先返回；
+若两节点都为候选主节点，则 id 小的值会主节点。注意这里的 id 为 string 类型。
+```
+
+
+
+#### 5、描述一下 Elasticsearch 索引文档的过程
+
+```
+第一步：客户写集群某节点写入数据，发送请求。（如果没有指定路由/协调节点，请求的节点扮演路由节点的角色。）
+第二步：节点 1 接受到请求后，使用文档_id 来确定文档属于分片 0。请求会被转到另外的节点，假定节点 3。因此分片 0 的主分片分配到节点 3 上。
+第三步：节点 3 在主分片上执行写操作，如果成功，则将请求并行转发到节点 1和节点 2 的副本分片上，等待结果返回。所有的副本分片都报告成功，节点 3 将向协调节点（节点 1）报告成功，节点 1 向请求客户端报告写入成功。
+```
+
+#### 6、elasticsearch 的倒排索引是什么
+
+```
+传统的我们的检索是通过文章，逐个遍历找到对应关键词的位置。
+而倒排索引，是通过分词策略，形成了词和文章的映射关系表，这种词典+映射表即为倒排索引。有了倒排索引，就能实现 o（1）时间复杂度的效率检索文章了，极大的提高了检索效率
+```
+
+
+
+
 
 ### rabbitmq/rocketmq
 ### memcache
