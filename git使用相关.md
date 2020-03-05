@@ -11,3 +11,8 @@ git config --global credential.helper store
 git pull
 然后就会要求输入用户名(邮箱)+密码，git就会保存了
 
+
+```
+
+
+
