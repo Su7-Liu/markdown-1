@@ -12,7 +12,10 @@ git pull
 然后就会要求输入用户名(邮箱)+密码，git就会保存了
 
 
+
+
 ```
-
-
-
+git remote add origin http://gitlab.sto.cn/devops/idc_cmdb.git
+git clone -b 1.1.1_lwh01  http://gitlab.sto.cn/devops/idc_cmdb.git
+git branch -a
+```
