@@ -151,6 +151,10 @@ str通过encode()方法可以编码为指定的bytes。反过来，当从网络�
 
 
 
+# Django REST framework
+
+
+
 ## Django REST framework 简介
 
 ```
@@ -178,10 +182,10 @@ Django REST framework 简介
 ## django Q 查询 filter 常用查询条件
 
 ```
-__exact 精确等于      like 'aaa'
- __iexact 精确等于    忽略大小写 ilike 'aaa'
+__exact 精确等于      like 'aaa'
+ __iexact 精确等于    忽略大小写 ilike 'aaa'
 __contains 包含 like '%aaa%'
-__icontains 包含        忽略大小写 ilike '%aaa%'，
+__icontains 包含        忽略大小写 ilike '%aaa%'，
 __gt 大于
 __gte 大于等于
 __lt 小于
@@ -198,3 +202,124 @@ __day 日期字段的日
 __isnull=True/False
 ```
 
+## django-view
+
+```
+django:
+view:Apiview
+
+drf(继承关系)
+GenericAPIViewSet(viewset)			--drf
+	GenericAPIView(APIView)			--drf
+		APIView(View)				--drf
+			View(object)			--django
+						
+mixins
+	CreateModelMixin
+	ListModelMixin
+	RetrieveModelMixin
+	UpdateModelMixin
+	DestroyModelMixin
+	
+Mixin和View的职能区分为：Mixin提供数据，View提供模板和渲染
+```
+
+## drf 的过滤
+
+```
+
+```
+
+## django 跨域问题
+
+```
+django 跨域问题：（django-cors-headers）
+
+什么是跨域？
+跨域是指一个域下的文档或脚本试图去请求另一个域下的资源，这里跨域是广义的。
+
+广义的跨域：
+
+1.) 资源跳转： A链接、重定向、表单提交
+2.) 资源嵌入： <link>、<script>、<img>、<frame>等dom标签，还有样式中background:url()、@font-face()等文件外链
+3.) 脚本请求： js发起的ajax请求、dom和js对象的跨域操作等
+
+我们通常所说的跨域是狭义的，是由浏览器同源策略限制的一类请求场景。
+什么是同源策略？
+同源策略/SOP（Same origin policy）是一种约定，由Netscape公司1995年引入浏览器，它是浏览器最核心也最基本的安全功能，如果缺少了同源策略，浏览器很容易受到XSS、CSFR等攻击。所谓同源是指"协议+域名+端口"三者相同，即便两个不同的域名指向同一个ip地址，也非同源。
+
+同源策略限制以下几种行为：
+
+1.) Cookie、LocalStorage 和 IndexDB 无法读取
+2.) DOM 和 Js对象无法获得
+3.) AJAX 请求不能发送
+
+
+跨域解决方案
+1、 通过jsonp跨域
+2、 document.domain + iframe跨域
+3、 location.hash + iframe
+4、 window.name + iframe跨域
+5、 postMessage跨域
+6、 跨域资源共享（CORS）
+7、 nginx代理跨域
+8、 nodejs中间件代理跨域
+9、 WebSocket协议跨域
+```
+
+##  序列化器Serializer
+
+https://www.cnblogs.com/zhuangyl23/p/11901839.html
+
+drf的序列化与反序列化概念
+
+```
+导入序列化模块
+from rest_framework.serializers import Serializer, ModelSerializer, ListModelSerializer
+```
+
+```
+序列化与反序列化
+序列化: 将对象序列化成字符串用于传输
+反序列化: 将字符串反序列化成对象用于使用
+```
+
+```
+drf的序列化与反序列化
+序列化: 将Model类对象序列化成字符串用于传输
+反序列化: 将字符串反序列化成Model对象用于使用
+```
+
+
+
+### 模型类序列化器ModelSerializer
+
+反序列化数据校验
+
+```
+系统的字段，可以在Field类型中设置系统校验规则（name=serializers.CharField(min_length=3)）
+
+自定义的反序列字段，设置系统校验规则同系统字段，但是需要在自定义校验规则中（局部、全局钩子）将自定义反序列化字段取出（返回剩余的数据与数据库交互）
+
+局部钩子的方法命名 validate_属性名(self, 属性的value)，校验规则为 成功返回属性的value 失败抛出校验错误的异常
+def validate_mobile_phone(self, mobile_phone):
+    # 注意参数，self以及字段名
+    # 注意函数名写法，validate_ + 字段名字
+    if not re.match(REGEX_MOBILE, mobile):
+    # REGEX_MOBILE表示手机的正则表达式
+        raise serializers.ValidationError("手机号码非法")
+    return mobile_phone
+    
+全局钩子的方法命名 validate(self, 所有属性attrs)，校验规则为 成功返回attrs 失败抛出校验错误的异常
+    def validate(self, attrs):
+    # 传进来什么参数，就返回什么参数，一般情况下用attrs
+        if attrs['start'] > attrs['finish']:
+            raise serializers.ValidationError("finish must occur after start")
+        return attrs
+```
+
+
+
+
+
+### ListModelSerializer
