@@ -15,7 +15,7 @@ git pull
 
 
 ```
-git remote add origin http://gitlab.sto.cn/devops/idc_cmdb.git
-git clone -b 1.1.1_lwh01  http://gitlab.sto.cn/devops/idc_cmdb.git
+git remote add origin http://xxx.git
+git clone -b 1.1.1_xxx  http://xxx.git
 git branch -a
 ```
