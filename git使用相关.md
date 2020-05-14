@@ -15,7 +15,15 @@ git pull
 
 
 ```
+配置远程仓库 
 git remote add origin http://xxx.git
+clone 远程仓库指定分支
 git clone -b 1.1.1_xxx  http://xxx.git
+查看全部分支
 git branch -a
+
+开始推送
+git push <远程主机名> <本地分支名>:<远程分支名>
+git push origin master:master
 ```
+
