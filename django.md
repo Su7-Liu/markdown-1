@@ -267,6 +267,25 @@ django 跨域问题：（django-cors-headers）
 9、 WebSocket协议跨域
 ```
 
+## Model
+
+### 基表
+
+```
+基表，为抽象表，是专门用来被继承，提供公有字段的，自身不会完成数据库迁移.(abstract)
+class BaseModel(models.Model):
+    is_delete = models.BooleanField(default=False)
+    create_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        # 设置 abstract = True 来声明基表 作为基表的model 不能在数据库中有对应的表
+        abstract = False
+```
+
+
+
+
+
 ##  序列化器Serializer
 
 https://www.cnblogs.com/zhuangyl23/p/11901839.html
