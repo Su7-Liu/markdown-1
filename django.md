@@ -267,6 +267,25 @@ django 跨域问题：（django-cors-headers）
 9、 WebSocket协议跨域
 ```
 
+## Model
+
+### 基表
+
+```
+基表，为抽象表，是专门用来被继承，提供公有字段的，自身不会完成数据库迁移.(abstract)
+class BaseModel(models.Model):
+    is_delete = models.BooleanField(default=False)
+    create_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        # 设置 abstract = True 来声明基表 作为基表的model 不能在数据库中有对应的表
+        abstract = False
+```
+
+
+
+
+
 ##  序列化器Serializer
 
 https://www.cnblogs.com/zhuangyl23/p/11901839.html
@@ -297,6 +316,8 @@ drf的序列化与反序列化
 反序列化数据校验
 
 ```
+系统字段校验--局部钩子--全局钩子（优先级：自定义》局部》全局）
+
 系统的字段，可以在Field类型中设置系统校验规则（name=serializers.CharField(min_length=3)）
 
 自定义的反序列字段，设置系统校验规则同系统字段，但是需要在自定义校验规则中（局部、全局钩子）将自定义反序列化字段取出（返回剩余的数据与数据库交互）
@@ -311,6 +332,7 @@ def validate_mobile_phone(self, mobile_phone):
     return mobile_phone
     
 全局钩子的方法命名 validate(self, 所有属性attrs)，校验规则为 成功返回attrs 失败抛出校验错误的异常
+attrs：系统与局部钩子校验通过的所有数据
     def validate(self, attrs):
     # 传进来什么参数，就返回什么参数，一般情况下用attrs
         if attrs['start'] > attrs['finish']:
