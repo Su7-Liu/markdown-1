@@ -22,8 +22,14 @@ git clone -b 1.1.1_xxx  http://xxx.git
 查看全部分支
 git branch -a
 
+切换分支
+git checkout 分支名
+
 开始推送
 git push <远程主机名> <本地分支名>:<远程分支名>
 git push origin master:master
+
+
+
 ```
 
