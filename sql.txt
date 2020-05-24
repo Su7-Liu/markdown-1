@@ -1,0 +1,88 @@
+#设置使用的字符集
+set names utf8;
+
+#SELECT DISTINCT 语句用于返回唯一不同的值
+#SELECT DISTINCT column_name,column_name FROM table_name;
+SELECT DISTINCT country FROM Websites;
+SELECT *  FROM Websites;
+
+SELECT * FROM websites WHERE country='CN' AND alexa>50;
+
+#ORDER BY 关键字用于对结果集进行排序,默认是ASC . ORDER BY DESC
+#SELECT column_name,column_name FROM table_name ORDER BY column_name,column_name ASC|DESC;
+
+SELECT * FROM websites ORDER BY  alexa DESC
+
+#ORDER BY 多列
+SELECT * FROM Websites
+ORDER BY alexa,country;
+
+#MySQL 支持 LIMIT 语句来选取指定的条数数据
+SELECT column_name(s) FROM table_name LIMIT number;
+SELECT * FROM Websites LIMIT 2;
+
+#SQL LIKE 操作符.LIKE 操作符用于在 WHERE 子句中搜索列中的指定模式。
+SELECT * FROM Websites WHERE url LIKE '%com/';
+SELECT * FROM Websites WHERE name REGEXP '^[Gfs]';
+
+#SQL BETWEEN 操作符
+#BETWEEN 操作符选取介于两个值之间的数据范围内的值。这些值可以是数值、文本或者日期
+SELECT * FROM Websites WHERE alexa  BETWEEN 1 AND 20;
+SELECT * FROM Websites WHERE name BETWEEN 'A' AND 'G
+
+#SQL 别名,通过使用 SQL，可以为表名称或列名称指定别名
+#列的 SQL 别名语法
+#SELECT column_name AS alias_name FROM table_name;
+#表的 SQL 别名语法
+#SELECT column_name(s) FROM table_name AS alias_name;
+SELECT * FROM access_log;
+SELECT name AS n, country AS c FROM Websites;
+#把三个列（url、alexa 和 country）结合在一起，并创建一个名为 "site_info" 的别名： CONCAT()函数将多个字符串连接成一个字符串。
+SELECT name, CONCAT(url, ', ', alexa, ', ', country) AS site_info FROM Websites;
+SELECT w.name, w.url, a.count, a.date FROM Websites AS w, access_log AS a WHERE a.site_id=w.id and w.name="菜鸟教程";
+
+SELECT * FROM Websites, access_log
+WHERE Websites.id=access_log.site_id 
+
+
+#SQL 连接(JOIN)。内连接(INNER JOIN||JOIN)，外连接（左连接，右连接,FULL JOIN）
+SELECT * FROM websites,access_log（笛卡尔积）
+
+SELECT Websites.id, Websites.name, access_log.count, access_log.date FROM Websites  INNER JOIN access_log ON Websites.id=access_log.site_id;
+
+
+#SQL UNION 操作符
+
+#GROUP BY 语句.GROUP BY 语句用于结合聚合函数，根据一个或多个列对结果集进行分组。
+SQL GROUP BY 语法
+SELECT column_name, aggregate_function(column_name)
+FROM table_name
+WHERE column_name operator value
+GROUP BY column_name;
+
+#统计 access_log 各个 site_id 的访问量：
+SELECT site_id, SUM(access_log.count) AS nums FROM access_log GROUP BY site_id;
+
+SELECT Websites.name,COUNT(access_log.aid) AS nums FROM access_log
+LEFT JOIN Websites
+ON access_log.site_id=Websites.id
+GROUP BY Websites.name;
+
+SELECT * FROM Websites  INNER JOIN access_log WHERE  access_log.site_id=Websites.id
+
+select @@global.sql_mode
+set @@global.sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+
+
+SELECT Websites.name, Websites.url, SUM(access_log.count) AS nums FROM (access_log
+INNER JOIN Websites
+ON access_log.site_id=Websites.id)
+GROUP BY Websites.name
+HAVING SUM(access_log.count) > 200;
+
+SELECT Websites.name, SUM(access_log.count) AS nums FROM Websites
+INNER JOIN access_log
+ON Websites.id=access_log.site_id
+WHERE Websites.alexa < 200 
+GROUP BY Websites.name
+HAVING SUM(access_log.count) > 200;
