@@ -352,9 +352,17 @@ extra_kwargs = {
                 'error_messages': {
                     'required': '必填项',
                     'min_length': '太短',
-                }
+                },
+                'authors': {
+                'write_only': True
+            },
+            'img': {
+                'read_only': True,
+            },
             }
         }
+  write_only：只反序列化
+  read_only：只序列化
         
 ```
 
