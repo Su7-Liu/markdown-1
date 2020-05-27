@@ -342,6 +342,14 @@ attrs：系统与局部钩子校验通过的所有数据
 
 
 
+```
+extra_kwargs:参数为ModelSerializer添加或修改原有的选项参数
+```
+
+
+
+
+
 
 
 ### ListModelSerializer
