@@ -1,4 +1,31 @@
-## 项目目录介绍
+## django虚拟环境安装
+
+```python
+Virtualenv的安装很简单，一行命令就能搞定：
+pip install virtualenv
+Virtualenv安装好之后，就是给自己的项目创建一个虚拟环境。
+virtualenv pyweb  #pyweb  为虚拟环境目录名，目录名自定义.
+当然你也可以使用下面的命令创建指定Python版本的虚拟环境。
+virtualenv --python=/usr/bin/python3.6 pyweb    #指定创建一个版本为python3.6的虚拟环境
+
+启动虚拟环境:
+
+Windows下：
+进入pyweb目录下的Scripts目录下。
+然后输入：activate 回车，就能启动虚拟环境。
+至于退出虚拟环境，使用如下命令即可！
+deactivate
+
+Linux下：
+我们进入创建的虚拟环境的bin目录下，然后使用如下命令启动
+source activate
+```
+
+
+
+
+## django项目目录介绍
+
 ```
 mysite
     - mysite    # 对整个程序进行配置
