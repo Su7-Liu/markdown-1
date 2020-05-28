@@ -298,7 +298,7 @@ django 跨域问题：（django-cors-headers）
 
 ### 基表
 
-```
+```python
 基表，为抽象表，是专门用来被继承，提供公有字段的，自身不会完成数据库迁移.(abstract)
 class BaseModel(models.Model):
     is_delete = models.BooleanField(default=False)
@@ -307,6 +307,35 @@ class BaseModel(models.Model):
     class Meta:
         # 设置 abstract = True 来声明基表 作为基表的model 不能在数据库中有对应的表
         abstract = False
+```
+
+### 模型管理器、自定义模型管理器
+
+```python
+每个模型类默认都有一个 objects 类属性，可以把它叫 模型管理器。它由django自动生成，类型为
+model表：
+class Department(models.Model):
+  # 模型管理器
+  objects  = models.Manager()
+  # 自定义模型管理器
+   manager = DepartmentManager()
+   
+   
+ class DepartmentManager(Manager):
+ #继承django.db.models.manager.Manager
+  # 修改管理器返回的原始查询集
+  def all(self):
+    """重写all方法：只返回2009年之后成立的部门"""
+    return super().all().filter(create_date__gte=date(2009,1,1))
+  # 在模型管理器中封装增删查的方法
+  def create_dep(self, name, create_date):
+    """新增一个部门"""
+    dep = Department()
+    dep.name = name
+    dep.create_date = create_date
+    dep.save()
+    return dep # 返回新增后的员工对象
+
 ```
 
 
@@ -342,14 +371,18 @@ drf的序列化与反序列化
 
 反序列化数据校验
 
-```
+``` python
 系统字段校验--局部钩子--全局钩子（优先级：自定义》局部》全局）
 
 系统的字段，可以在Field类型中设置系统校验规则（name=serializers.CharField(min_length=3)）
 
 自定义的反序列字段，设置系统校验规则同系统字段，但是需要在自定义校验规则中（局部、全局钩子）将自定义反序列化字段取出（返回剩余的数据与数据库交互）
 
-局部钩子的方法命名 validate_属性名(self, 属性的value)，校验规则为 成功返回属性的value 失败抛出校验错误的异常
+is_valid：
+证数据：使用序列化器进行反序列化时，需要对数据进行验证后，才能获取验证成功的数据或保存成模型类对象
+
+局部钩子的方法命名 
+validate_属性名(self, 属性的value)，校验规则为 成功返回属性的value 失败抛出校验错误的异常
 def validate_mobile_phone(self, mobile_phone):
     # 注意参数，self以及字段名
     # 注意函数名写法，validate_ + 字段名字
@@ -358,7 +391,8 @@ def validate_mobile_phone(self, mobile_phone):
         raise serializers.ValidationError("手机号码非法")
     return mobile_phone
     
-全局钩子的方法命名 validate(self, 所有属性attrs)，校验规则为 成功返回attrs 失败抛出校验错误的异常
+全局钩子的方法命名 
+validate(self, 所有属性attrs)，校验规则为 成功返回attrs 失败抛出校验错误的异常
 attrs：系统与局部钩子校验通过的所有数据
     def validate(self, attrs):
     # 传进来什么参数，就返回什么参数，一般情况下用attrs
@@ -366,6 +400,34 @@ attrs：系统与局部钩子校验通过的所有数据
             raise serializers.ValidationError("finish must occur after start")
         return attrs
 ```
+
+
+
+```
+extra_kwargs:参数为ModelSerializer添加或修改原有的选项参数,系统校验规则
+extra_kwargs划分只序列化或只反序列化字段（一般我们把需要存入到数据库中的使用write_only（反序列化）,只需要展示的就read_only(序列化)，看需求设计）
+extra_kwargs = {
+            'name': {
+                'required': True,  #设置name字段必填
+                'min_length': 1,
+                'error_messages': {
+                    'required': '必填项',
+                    'min_length': '太短',
+                },
+                'authors': {
+                'write_only': True
+            },
+            'img': {
+                'read_only': True,
+            },
+            }
+        }
+  write_only：只反序列化
+  read_only：只序列化
+        
+```
+
+
 
 
 
