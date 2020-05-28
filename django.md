@@ -271,7 +271,7 @@ django 跨域问题：（django-cors-headers）
 
 ### 基表
 
-```
+```python
 基表，为抽象表，是专门用来被继承，提供公有字段的，自身不会完成数据库迁移.(abstract)
 class BaseModel(models.Model):
     is_delete = models.BooleanField(default=False)
@@ -280,6 +280,35 @@ class BaseModel(models.Model):
     class Meta:
         # 设置 abstract = True 来声明基表 作为基表的model 不能在数据库中有对应的表
         abstract = False
+```
+
+### 模型管理器、自定义模型管理器
+
+```python
+每个模型类默认都有一个 objects 类属性，可以把它叫 模型管理器。它由django自动生成，类型为
+model表：
+class Department(models.Model):
+  # 模型管理器
+  objects  = models.Manager()
+  # 自定义模型管理器
+   manager = DepartmentManager()
+   
+   
+ class DepartmentManager(Manager):
+ #继承django.db.models.manager.Manager
+  # 修改管理器返回的原始查询集
+  def all(self):
+    """重写all方法：只返回2009年之后成立的部门"""
+    return super().all().filter(create_date__gte=date(2009,1,1))
+  # 在模型管理器中封装增删查的方法
+  def create_dep(self, name, create_date):
+    """新增一个部门"""
+    dep = Department()
+    dep.name = name
+    dep.create_date = create_date
+    dep.save()
+    return dep # 返回新增后的员工对象
+
 ```
 
 
