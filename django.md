@@ -344,14 +344,18 @@ drf的序列化与反序列化
 
 反序列化数据校验
 
-```
+``` python
 系统字段校验--局部钩子--全局钩子（优先级：自定义》局部》全局）
 
 系统的字段，可以在Field类型中设置系统校验规则（name=serializers.CharField(min_length=3)）
 
 自定义的反序列字段，设置系统校验规则同系统字段，但是需要在自定义校验规则中（局部、全局钩子）将自定义反序列化字段取出（返回剩余的数据与数据库交互）
 
-局部钩子的方法命名 validate_属性名(self, 属性的value)，校验规则为 成功返回属性的value 失败抛出校验错误的异常
+is_valid：
+证数据：使用序列化器进行反序列化时，需要对数据进行验证后，才能获取验证成功的数据或保存成模型类对象
+
+局部钩子的方法命名 
+validate_属性名(self, 属性的value)，校验规则为 成功返回属性的value 失败抛出校验错误的异常
 def validate_mobile_phone(self, mobile_phone):
     # 注意参数，self以及字段名
     # 注意函数名写法，validate_ + 字段名字
@@ -360,7 +364,8 @@ def validate_mobile_phone(self, mobile_phone):
         raise serializers.ValidationError("手机号码非法")
     return mobile_phone
     
-全局钩子的方法命名 validate(self, 所有属性attrs)，校验规则为 成功返回attrs 失败抛出校验错误的异常
+全局钩子的方法命名 
+validate(self, 所有属性attrs)，校验规则为 成功返回attrs 失败抛出校验错误的异常
 attrs：系统与局部钩子校验通过的所有数据
     def validate(self, attrs):
     # 传进来什么参数，就返回什么参数，一般情况下用attrs
