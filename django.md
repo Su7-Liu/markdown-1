@@ -401,9 +401,14 @@ attrs：系统与局部钩子校验通过的所有数据
         return attrs
 ```
 
+```
 
 
 ```
+
+
+
+```python
 extra_kwargs:参数为ModelSerializer添加或修改原有的选项参数,系统校验规则
 extra_kwargs划分只序列化或只反序列化字段（一般我们把需要存入到数据库中的使用write_only（反序列化）,只需要展示的就read_only(序列化)，看需求设计）
 extra_kwargs = {
