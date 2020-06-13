@@ -19,6 +19,14 @@ deactivate
 Linux下：
 我们进入创建的虚拟环境的bin目录下，然后使用如下命令启动
 source activate
+
+生产requirements.txt文件：
+pip freeze > requirements.txt
+#将requirements.txt拷贝到B安装
+#该命令可以跳过安装错误的库，继续安装
+while read requirement; do sudo pip install $requirement; done < requirements.txt   
+
+
 ```
 
 
