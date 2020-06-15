@@ -29,7 +29,14 @@ git checkout 分支名
 git push <远程主机名> <本地分支名>:<远程分支名>
 git push origin master:master
 
+删除远程分支
+git push origin --delete dev
+
+删除本地分支
+git branch -d dev
 
 
+
+git checkout -b 1.1.1_lwh remotes/origin/1.1.1_lwh
 ```
 
