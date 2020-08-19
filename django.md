@@ -184,6 +184,18 @@ str通过encode()方法可以编码为指定的bytes。反过来，当从网络�
 
 ```
 
+### error: command 'gcc' failed with exit status 1
+
+```
+安装运行库
+yum install gcc libffi-devel python-devel openssl-devel -y
+
+若python3是使用yum安装的，则安装python3的devel环境
+yum install  python3-devel -y
+```
+
+
+
 
 
 # Django REST framework
