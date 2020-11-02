@@ -1,0 +1,86 @@
+查询某个时间段的日志
+sed -n '/2019-02-19 10:00:[0-9][0-9]/,/2019-02-20 10:00:00/p'  log.log
+sed查看某时间段到现在的系统日志：
+sed  -n  '/May 20 17/,$p'   /var/log/messages 
+使用正则表达式。
+sed -n ‘/2010-11-17 09:[0-9][0-9]:[0-9][0-9]/,/2010-11-17 16:[0-9][0-9]:[0-9][0-9]/p’  logfile
+
+for i in {1..2};do sed -n '/2019-02-19 14:00:[0-9][0-9]/,/2019-02-19 19:00:[0-9][0-9]/p' /app/apache-tomcat-7.0.82_$i/logs/catalina.out.20190219 >/var/tmp/log186_$i.log ;done
+
+
+sed -n '/2019-09-27 02:0[0-9]:[0-9][0-9].[0-9][0-9][0-9]/,/2019-09-27 03:0[0-9]:[0-9][0-9].[0-9][0-9][0-9]/p' ex_2019-09-27.log >> trace-push.ex.txt
+
+
+查询应用启动时间：
+ps -p pid号 -o lstart
+
+2.查看Web服务器进程连接数
+netstat -antp |grep 8082|grep ESTABLISHED -c
+windows查看连接数
+当前tcp链接数总量：
+netstat -ant|find /C /I "TCP"
+10.10.0.1的网络链接数：
+netstat -ant|find /C /I "10.10.0.1"
+
+
+查看tar.gz 内容
+tar -tvf test.tar.gz
+从文件压缩
+tar -T list.txt  -zcvf test.tar.gz
+
+tar排除多个目录
+tar -zcvf tomcat.tar.gz --exclude=tomcat/logs --exclude=tomcat/libs --exclude=tomcat/xiaoshan.txt tomcat
+
+find命令查找多个文件（或）
+find / -name '*.php' -or -name '*.txt' 
+在多个目录下查找
+find . /var/log/ -name '*.txt'
+限制目录查找的深度
+find ./test -maxdepth 2 -name "*.php" 
+
+
+
+查看是否是虚机：
+windows：
+可以通过powershell命令去看是否为虚拟机：
+Get-WmiObject Win32_Computersystem | fl model | findstr model
+
+Linux：
+可以通过：dmidecode -s system-product-name |grep -v '^#' 查看是否为虚拟机
+使用tar 的--exclude 命令排除打包的时候，不能加“/”，否则还是会把logs目录以及其下的文件打包进去。
+
+例如：把txt文件中包含test行的行尾添加 ‘000’
+sed -i '/test/ s/$/000/'
+在每行的头添加字符，比如"HEAD"，命令如下：
+sed 's/^/HEAD/g' test.file
+
+
+
+查看某个端口的连接数
+netstat -nat | grep -iw "9090" | wc -l
+
+
+unzip 指定字符集解压
+ unzip -q -I utf8 jnjh_publicity.zip
+
+
+
+
+netstat -an|awk '/tcp/ {print $6}'|sort|uniq -c
+状态：描述
+CLOSED：无连接是活动的或正在进行
+LISTEN：服务器在等待进入呼叫
+SYN_RECV：一个连接请求已经到达，等待确认
+SYN_SENT：应用已经开始，打开一个连接
+ESTABLISHED：正常数据传输状态
+FIN_WAIT1：应用说它已经完成
+FIN_WAIT2：另一边已同意释放
+ITMED_WAIT：等待所有分组死掉
+CLOSING：两边同时尝试关闭
+TIME_WAIT：另一边已初始化一个释放
+LAST_ACK：等待所有分组死掉
+
+
+find结合xargs清空文件的方法
+find . -type f  | xargs -I {} sh -c '> {}'
+
