@@ -1,0 +1,7 @@
+https://www.runoob.com/w3cnote/deconstruction-assignment.html
+
+ES6 新增加了两个重要的 JavaScript 关键字: let 和 const
+
+	let 声明的变量只在 let 命令所在的代码块内有效。var 是在全局范围内有效。let 只能声明一次 var 可以声明多次。
+	const 声明一个只读的常量，一旦声明，常量的值就不能改变。
+ES6 数据类型除了 Number 、 String 、 Boolean 、 Objec t、 null 和 undefined ，还新增了 Symbol 。
