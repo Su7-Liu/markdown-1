@@ -77,12 +77,13 @@ React.Component
 </body>
 ```
 
-<<<<<<< HEAD
+
 ## react 跨域
 1、正向代理 - 开发环境
+
 2、反向代理 - 生产环境
+
 api：http://www.tianqiapi.com/api?version=v6&appid=23035354&appsecret=8YvlPNrz&city=北京'
-=======
 
 ## state和props
 ```
