@@ -24,6 +24,7 @@ git branch -a
 
 切换分支
 git checkout 分支名
+git checkout -b 1.1.1_lwh remotes/origin/1.1.1_lwh
 
 开始推送
 git push <远程主机名> <本地分支名>:<远程分支名>
@@ -37,7 +38,7 @@ git branch -d dev
 
 
 
-git checkout -b 1.1.1_lwh remotes/origin/1.1.1_lwh
+
 
 
 
