@@ -136,3 +136,18 @@ json-server json文件数据名字 --port 4000
 访问：http://localhost:4000/arr
 
 ```
+
+## react-router-dom
+```
+1 总体的步骤分为三步:
+2 配置路由的容器Router;
+3 配置路由的连接LInk;
+4 配置路由填充的位置以及路径和组件的映射关系;:
+```
+
+# 注意事项
+## import
+```
+import 'components' 引用全局module
+import './components' 引用当前目录下的module
+```
