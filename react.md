@@ -150,4 +150,82 @@ json-server json文件数据名字 --port 4000
 ```
 import 'components' 引用全局module
 import './components' 引用当前目录下的module
+路由模式：
+hash HashRouter  hash模式，带#号，刷新的时候，页面不会丢失
+brower：BrowerRouter  历史记录模式，没有#号，通过历史记录api进行路由切换，刷新会丢失，本地模式不会丢失
+index.js 引用路由模块
+路由模块包裹组件
+
+
+withRouter：高阶组件，监控路由变化。参数是一个组件，返回也是一个组件。
+编程式导航：props.history.push('./xxx')
+
+路由传参：params 方式进行传参
+
 ```
+
+## hock
+让无状态组件，可以使用状态
+
+## redux 
+```
+js提供的一个可预测行的状态组件
+集中管理react中的多组件状态
+redux是专门的状态管理库（在vue中也可以使用）
+
+需求场景：
+多个组件状态需要共享的时候
+一个组件需要改变另一个组件状态的时候
+组件状态需要在任何地方可以拿到
+
+三大原则：
+1、单一数据源
+2、redux中的state是只读的
+3、使用函数进行修改redux中的state
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
