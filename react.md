@@ -195,7 +195,8 @@ withRouter：高阶组件，监控路由变化。参数是一个组件，返回�
 
 ```
 
-
+## vscode插件
+1、VS Code ES7 React/Redux/React-Native/JS snippets
 
 
 
