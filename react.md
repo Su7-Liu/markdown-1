@@ -29,6 +29,26 @@ ReactDom.render()
 React.createElement()
 React.Component
 ```
+## 组件间通信
+redux,react-redux,redux-thunk
+```
+redux是状态管理模块，把所有状态都统一进行管理，方便组件之间传递数据.
+场景：
+1、某个组件的状态，需要共享
+2、某个状态需要在任何地方都可以拿到
+3、一个组件需要改变全局状态
+4、一个组件需要改变另一个组件的状态
+二原理：
+客户端通过dispatch发送action，action的变化会触发redures，redures返回新的state，store接收到新的state，subscribejian监听store变化，渲染根组件。
+```
+react-redux解析
+```
+主要是分离视图和数据，简化、方便redux。提供了Provider组件，方便跨组件传输数据。还提供connect组件，绑定当前组件和state、dispatch的关系，当前组件通过this.props就可以访问state和dispatch。
+```
+redux-thunk解析-用来处理异步任务
+```
+redux-thunk是redux的中间件，使action可以接收一个函数，函数接收两个参数dispatch和state，可用来处理异步任务。
+```
 
 # jsx
 ## jsx 注释 
