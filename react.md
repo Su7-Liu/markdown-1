@@ -164,12 +164,24 @@ json-server json文件数据名字 --port 4000
 
 ```
 
-## react-router-dom
+## react-router
 ```
 1 总体的步骤分为三步:
 2 配置路由的容器Router;
 3 配置路由的连接LInk;
-4 配置路由填充的位置以及路径和组件的映射关系;:
+4 配置路由填充的位置以及路径和组件的映射关系;
+
+路由模式：
+hash HashRouter  hash模式，带#号，刷新的时候，页面不会丢失
+brower：BrowerRouter  历史记录模式，没有#号，通过历史记录api进行路由切换，刷新会丢失，本地模式不会丢失
+index.js 引用路由模块
+
+路由模块包裹组件
+
+withRouter：高阶组件，监控路由变化。参数是一个组件，返回也是一个组件。
+编程式导航：props.history.push('./xxx')
+
+路由传参：params 方式进行传参
 ```
 
 
@@ -208,17 +220,7 @@ npm install --save-dev moduleName # --save-dev 的意思是将模块安装到项
 ```
 import 'components' 引用全局module
 import './components' 引用当前目录下的module
-路由模式：
-hash HashRouter  hash模式，带#号，刷新的时候，页面不会丢失
-brower：BrowerRouter  历史记录模式，没有#号，通过历史记录api进行路由切换，刷新会丢失，本地模式不会丢失
-index.js 引用路由模块
-路由模块包裹组件
 
-
-withRouter：高阶组件，监控路由变化。参数是一个组件，返回也是一个组件。
-编程式导航：props.history.push('./xxx')
-
-路由传参：params 方式进行传参
 
 ```
 
