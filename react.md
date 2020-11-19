@@ -97,6 +97,89 @@ redux-thunk是redux的中间件，使action可以接收一个函数，函数接�
 </body>
 ```
 
+## React内三种函数的写法
+```
+//写法一：让函数内部的this指向这个类的实例，它是用bind实现的，bind的第一个参数表示context，就是this。 
+class ManageAddress extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleChangeAddressType = this.handleChangeAddressType.bind(this)        ...
+    }
+
+    /**
+     * 切换地址类型，重新获取地址列表
+     * @param key
+     */
+    handleChangeAddressType(key) {
+     ...
+    };
+
+  render() {
+        return (
+            ...
+            <button onClick={this.handleChangeAddressType}>测试
+            </button >
+           ...
+        )
+    }}
+```
+```
+写法二：相当于让handleChangeAddressType的值为一个箭头函数，所以调用处直接传入这个值就可以，注意不能加括号会报错.它不会自己创建this，它会从自己的作用域链上层继承this，这里this就会指向这个类的实例。这不是js标准写法，但是babel已经支持了。
+
+class ManageAddress extends React.Component {
+
+    constructor(props) {
+        super(props);
+        ...
+    }
+
+    /**
+     * 切换地址类型，重新获取地址列表
+     * @param key
+     */
+    handleChangeAddressType = (key) =>{
+     ...
+    };
+
+  render() {
+        return (
+            ...
+            <button onClick={this.handleChangeAddressType}>测试
+            </button >
+           ...
+        )
+    }
+}
+```
+```
+写法三：在调用处使用箭头函数，与第二种方法类似
+//写法三
+class ManageAddress extends React.Component {
+
+    constructor(props) {
+        super(props);
+        ...
+    }
+
+    /**
+     * 切换地址类型，重新获取地址列表
+     * @param key
+     */
+    handleChangeAddressType(key) {
+     ...
+    };
+
+  render() {
+        return (
+            ...
+            <button onClick={(key)=>this.handleChangeAddressType(key)}>测试
+            </button >
+           ...
+        )
+    }
+}
+```
 
 ## react 跨域
 1、正向代理 - 开发环境
@@ -212,6 +295,13 @@ npm install moduleName # 安装模块到项目目录
 npm install -g moduleName # -g 意思是将模块安装到全局，具体安装到磁盘哪个位置，要看 npm config prefix 的位置。
 npm install --save moduleName # --save 的意思是将模块安装到项目目录下，并在package文件的dependencies节点写入依赖。
 npm install --save-dev moduleName # --save-dev 的意思是将模块安装到项目目录下，并在package文件的devDependencies节点写入依赖。
+
+自定义start端口：
+linux：PORT=8081 npm start /export PORT=8081  npm start
+window:
+set PORT=8081
+npm start#关闭命令窗口后，端口配置也会失效
+
 ```
 
 
@@ -220,6 +310,7 @@ npm install --save-dev moduleName # --save-dev 的意思是将模块安装到项
 ```
 import 'components' 引用全局module
 import './components' 引用当前目录下的module
+
 
 
 ```
