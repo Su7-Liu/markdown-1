@@ -193,6 +193,12 @@ api：http://www.tianqiapi.com/api?version=v6&appid=23035354&appsecret=8YvlPNrz&
 state可变，props对于当前页面组件来说，是只读的，如果想要修改props的数据，那么我们修改传递给当前组件的父组件。
 如果想要使用状态，那么不能使用无状态组件。
 ```
+```
+定义state 步骤
+初始化状态
+更新状态
+读取状态
+```
 
 ## refs 转发
 React 支持一种非常特殊的属性 Ref ，你可以用来绑定到 render() 输出的任何组件上。
