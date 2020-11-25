@@ -188,6 +188,27 @@ class ManageAddress extends React.Component {
 
 api：http://www.tianqiapi.com/api?version=v6&appid=23035354&appsecret=8YvlPNrz&city=北京'
 
+```
+方案一：package.json中加上proxy代理配置(推荐)
+"proxy": "http://0.0.2.89:7300"
+```
+
+```
+方案二 \config\webpackDevServer.config.js
+// 配置代理
+ proxy: {
+	'/app': {
+        target: 'http://192.168.100.20:8000', // 后台服务地址以及端口号
+        // ws: true,
+        changeOrigin: true, //是否跨域
+         pathRewrite: { '^/api': '/' },
+        secure:false
+      }
+ }
+```
+方案三：http-proxy-middleware
+
+
 ## state和props
 ```
 state可变，props对于当前页面组件来说，是只读的，如果想要修改props的数据，那么我们修改传递给当前组件的父组件。
@@ -199,7 +220,7 @@ state可变，props对于当前页面组件来说，是只读的，如果想要�
 更新状态
 读取状态
 ```
-  
+
 
 ## refs 转发
 
@@ -325,6 +346,16 @@ import './components' 引用当前目录下的module
 
 ## vscode插件
 1、VS Code ES7 React/Redux/React-Native/JS snippets
+
+# 安装报错
+```
+32725 error code EPERM
+32726 error syscall unlink
+32727 error path G:\untitled\cmdb\devops-cmdb-front\node_modules\.staging\antd-5cdefaa3\dist\antd-with-locales.js
+32728 error errno -4048
+32729 error Error: EPERM: operation not permitted, unlink 
+```
+
 
 
 
