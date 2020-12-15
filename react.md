@@ -29,6 +29,14 @@ ReactDom.render()
 React.createElement()
 React.Component
 ```
+## 语法规则
+```
+1、绑定数据采用的是单{}
+2、绑定style的时候要双{{ }}，第一层代表表达式，第二层代表对象
+3、自定义组件的时候，组件名称首字母大写	
+4、组件必须只能有一个根标签
+5、驼峰命名
+```
 ## 组件间通信
 redux,react-redux,redux-thunk
 ```
