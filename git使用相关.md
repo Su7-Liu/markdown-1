@@ -66,3 +66,11 @@ old old old code（拉下来的代码）
 分析：head 到 =======里面的lalala是自己的commit的内容
 ```
 
+# 上传本地文件到已有数据仓库
+1. 获取到gitlab项目地址 http://gitlab.sto.cn/devops/basic-image.git
+2. 将git初始化到本地文件目录 git init
+3. git pull http://gitlab.sto.cn/devops/basic-image.git
+4. 将远程的仓库分支来取到本地，执行命令：git remote add origin http://gitlab.com/dangjian/dpp-mobile.git
+5. git add .
+6. git commit -m "备注内容" 
+7. git push -u origin master
